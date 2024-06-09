@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="register.html">Register</a></li>
+    </ul>
+</nav>
+
+<h1>Your Shopping Cart</h1>
+
+    <div id="cart">
+        <div class="item">
+            <span>Item 1</span>
+            <input type="number" class="quantity" value="1" min="1">
+            <span class="price">10</span>
+        </div>
+        <div class="item">
+            <span>Item 2</span>
+            <input type="number" class="quantity" value="1" min="1">
+            <span class="price">20</span>
+        </div>
+        <div class="item">
+            <span>Item 3</span>
+            <input type="number" class="quantity" value="1" min="1">
+            <span class="price">15</span>
+        </div>
+    </div>
+
+    <hr>
+
+    <div id="total">
+        Total: <span id="totalAmount">0</span>
+    </div>
+
+    <script>
+        // Get all elements with class "item"
+        const items = document.querySelectorAll('.item');
+        let totalAmount = 0;
+
+        // Function to update total amount
+        function updateTotal() {
+            totalAmount = 0;
+            items.forEach(item => {
+                const quantity = parseInt(item.querySelector('.quantity').value);
+                const price = parseFloat(item.querySelector('.price').textContent);
+                const subtotal = quantity * price;
+                totalAmount += subtotal;
+            });
+            document.getElementById('totalAmount').textContent = totalAmount.toFixed(2);
+        }
+
+        // Add event listeners to quantity inputs
+        items.forEach(item => {
+            item.querySelector('.quantity').addEventListener('input', updateTotal);
+        });
+
+        // Calculate total amount on page load
+        updateTotal();
+    </script>
+</body>
+</html>
