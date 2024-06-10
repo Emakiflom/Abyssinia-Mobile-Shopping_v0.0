@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash
+from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_wtf import FlaskForm
 from flask_wtf.csrf import CSRFProtect
 from wtforms import StringField, PasswordField, SubmitField
@@ -14,25 +14,36 @@ db_config = {
     "host": "localhost",
     "user": "your_username",
     "password": "your_password",
-    "database": "piyasa_dev_db",  # Your database name
+    "database": "piyasa_dev_db",
 }
 
 # Configure the database connection
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://abyssinia_dev:abyssinia_dev_pwd@localhost/absiniya_dev_db'
-
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://abyssinia_dev:abyssinia_dev_pwd@localhost/absiniya_dev_db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost:3306/absiniya'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://flask_user:flask_password@localhost/your_database_name?unix_socket=/var/run/mysqld/mysqld.sock'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # To suppress a warning from SQLAlchemy
 # Create the database object
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://root@localhost/absiniya?unix_socket=/opt/lampp/var/mysql/mysql.sock'
 db = SQLAlchemy(app)
 
 
 # Define a User model for the database
-class User(db.Model):
-    UserID = db.Column(db.Integer, primary_key=True)
-    FirstName = db.Column(db.String(20), nullable=False)
-    LastName = db.Column(db.String(20), nullable=False)
-    Email = db.Column(db.String(45), unique=True, nullable=False)
-    Password = db.Column(db.String(128), nullable=False)
-    Address = db.Column(db.String(45), nullable=False)
-    PhoneNumber = db.Column(db.String(20), nullable=False)
+# class User(db.Model):
+#     UserID = db.Column(db.Integer, primary_key=True)
+#     FirstName = db.Column(db.String(20), nullable=False)
+#     LastName = db.Column(db.String(20), nullable=False)
+#     Email = db.Column(db.String(45), unique=True, nullable=False)
+#     Password = db.Column(db.String(128), nullable=False)
+#     Address = db.Column(db.String(45), nullable=False)
+#     PhoneNumber = db.Column(db.String(20), nullable=False)
+
+class Users(db.Model):
+    users_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(20), nullable=False)
+    phone = db.Column(db.String(45), unique=True, nullable=False)
+    password = db.Column(db.String(128), nullable=False)
 
 # Define an Item model for the database
 class Item(db.Model):
@@ -57,14 +68,14 @@ def register():
         phone_number = request.form['phoneNumber']
 
         # Check if the email is already registered
-        if User.query.filter_by(Email=email).first():
+        if Users.query.filter_by(Email=email).first():
             flash('Email already registered!', 'error')
         else:
             # Hash the password before storing it in the database
             hashed_password = generate_password_hash(password, method='sha256')
             
             # Create a new user instance and add it to the database
-            new_user = User(FirstName=first_name, LastName=last_name, Email=email, Password=hashed_password, Address=address, PhoneNumber=phone_number)
+            new_user = Users(FirstName=first_name, LastName=last_name, Email=email, Password=hashed_password, Address=address, PhoneNumber=phone_number)
             db.session.add(new_user)
             db.session.commit()
             flash('Registration successful!', 'success')
@@ -80,9 +91,11 @@ def login():
         password = request.form['password']
 
         # Check if a user with the provided username or email exists
-        user = User.query.filter((User.Email == username) | (User.FirstName == username)).first()
+        #user = Users.query.filter((Users.email == username) | (Users.FirstName == username)).first()
+        user = Users.query.filter((Users.email == username)).first()
 
-        if user and check_password_hash(user.Password, password):
+        #if user and check_password_hash(user.Password, password):
+        if user and user.password:
             flash('Login successful!', 'success')
             # Redirect to the profile page upon successful login
             return redirect(url_for('profile'))
