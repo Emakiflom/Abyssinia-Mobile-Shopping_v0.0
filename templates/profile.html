@@ -10,14 +10,17 @@
 
 <nav>
     <ul>
-        <li><a href="/">Home</a></li>
+        
         {% if admin_true %}
         <li><a href="/view_item">Item Managment</a></li>
         <li class="cart"><a href="/logout">logout</a></li>
-        {% elif admin_true == 0 %}
+        {% endif %}
+        {% if user_id %}
+        <li><a href="/profile">Home</a></li>
         <li class="cart"><a href="/cart">Cart</a></li>
-        <li class="cart"><a href="/logout">logout</a></li>
+        <li class=""><a href="/logout">logout</a></li>
         {% else %}
+        <li><a href="/">Home</a></li>
         <li><a href="/login">Login</a></li>
         {% endif %}
 
@@ -32,9 +35,13 @@
     {% for item in items %}
     <div class="item">
         <h2>{{ item.name }}</h2>
-        <p>{{ item.description }}</p>
         <img src="{{ item.image }}" alt="{{ item.name }} Image">
+        
         <p>Price: ${{ item.price }}</p>
+        <form action="/add_cart" method="post">
+            <input type="text" name="item_id" hidden value="{{ item.item_id }}" id="">
+            <input type="submit" class="fa fa-plus" value="cart">
+        </form>
     </div>
     {% endfor %}
 </div>

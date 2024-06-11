@@ -13,10 +13,12 @@
 
 <nav>
     <ul>
+           
         {% if admin_true %}
         <li><a href="/view_item">Item Managment</a></li>
         <li class="cart"><a href="/logout">logout</a></li>
-        {% elif admin_true != 0 %}
+        {% endif %}
+        {% if user_id %}
         <li><a href="/profile">Home</a></li>
         <li class="cart"><a href="/cart">Cart</a></li>
         <li class=""><a href="/logout">logout</a></li>
@@ -25,11 +27,15 @@
         <li><a href="/login">Login</a></li>
         {% endif %}
 
+
     </ul>
 </nav>
 
 <style>
     .class_img{
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
         border: 1px inset #afb8b4;
     }
 </style>
@@ -40,39 +46,33 @@
 
 <div class="card">
     <div class="card-header">
-     <a href="/view_item"><button class="btn btn-info"><span class="fa fa-backward"></span></button></a> View  Item Details
+        <a href="/add_item"><button class="btn btn-info"><span class="fa fa-plus"></span></button></a>  Item Managment
     </div>
     <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
     <tbody>
 
+    {% for cart, item in cart_items %}
     <tr>
-        <th>Item Mame</th>
-        <td>{{ items.name }}</td>  
+        <td>{{ item.name }}</td>  
+        <td>{{ item.price }}$</td>
+        <td>{{ item.category }}</td>
+        <td><img class="class_img" src="{{ item.image }}"/></td>
+        <td>
+            <a href="/view_item_detail/{{ item.item_id }}"><button type="button" class="btn btn-primary"><i class="fa fa-eye"></i></button></a>
+            <a href="/edit_item/{{ item.item_id }}"><button type="button" class="btn btn-success"><i class="fa fa-edit"></i></button></a>
+            <a href="/delete_item/{{ item.item_id }}"><button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button></a>
+        </td>
         </tr>
-        <tr>
-            <th>Item Price</th>
-            <td>{{ items.price }}</td>
-        </tr>
-
-        <tr>
-            <th>Item category</th>
-
-            <td>{{ items.category }}</td>
-        </tr>
-
-        <tr>
-            <th>Item Detail</th>
-
-            <td>{{ items.details }}</td>
-        </tr>
-
-        <tr>
-            <th>Item Image</th>
-
-        <td><img class="class_img" src="{{ items.image }}"/></td>
-        </tr>
-        </tr>
-        
+    {% endfor %}
 
     </tbody>
     </table>

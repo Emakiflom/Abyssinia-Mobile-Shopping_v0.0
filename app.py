@@ -8,6 +8,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 import pyrebase
 import random
 import string
+from sqlalchemy.orm import aliased
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -41,15 +42,14 @@ db = SQLAlchemy(app)
 def generate_random_combination():
     characters = string.ascii_lowercase
     return ''.join(random.choice(characters) for _ in range(6))
-# Define a User model for the database
-# class User(db.Model):
-#     UserID = db.Column(db.Integer, primary_key=True)
-#     FirstName = db.Column(db.String(20), nullable=False)
-#     LastName = db.Column(db.String(20), nullable=False)
-#     Email = db.Column(db.String(45), unique=True, nullable=False)
-#     Password = db.Column(db.String(128), nullable=False)
-#     Address = db.Column(db.String(45), nullable=False)
-#     PhoneNumber = db.Column(db.String(20), nullable=False)
+#Define a Cart model for the database
+class Cart(db.Model):
+    cart_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String(20), nullable=False)
+    item_id = db.Column(db.Integer, db.ForeignKey('item.item_id'), nullable=False)
+    cart_status = db.Column(db.String(45), unique=True, nullable=False)
+     # Define the relationship to Item
+    item = db.relationship('Item', back_populates='carts')
 
 class Users(db.Model):
     users_id = db.Column(db.Integer, primary_key=True)
@@ -68,14 +68,19 @@ class Item(db.Model):
     category = db.Column(db.Text, nullable=False)
     image = db.Column(db.Text, nullable=False)
     details = db.Column(db.Text, nullable=False)
+    carts = db.relationship('Cart', back_populates='item')
+
+
 
 # Handle registration form submission and insert data into the database
 
 @app.route('/')
 def home():
     admin_true = session.get('admin_true')
+    user_id = session.get('user_id')
     items = Item.query.all()
-    return render_template('home.html', items=items, admin_true = admin_true)
+    
+    return render_template('home.html', items=items, admin_true = admin_true, user_id = user_id)
 
 
 @app.route('/register_user', methods=['GET', 'POST'])
@@ -115,14 +120,15 @@ def login():
         user = Users.query.filter((Users.email == username)).first()
 
         if_admin_ture= user.admin
+        user_id = user.users_id
 
-        
-
+    
         #if user and check_password_hash(user.Password, password):
         if user and user.password:
             flash('Login successful!', 'success')
             # Redirect to the profile page upon successful login
             session['admin_true'] = if_admin_ture
+            session['user_id'] = user_id
             return redirect(url_for('profile'))
 
         flash('Invalid username or password. Please try again.', 'error')
@@ -134,8 +140,9 @@ def login():
 @app.route('/profile')
 def profile():
     admin_true = session.get('admin_true')
+    user_id = session.get('user_id')
     items = Item.query.all()
-    return render_template('profile.html', items=items, admin_true = admin_true)
+    return render_template('profile.html', items=items, admin_true = admin_true, user_id = user_id)
 
 # Define the profile route to display the profile.html page
 @app.route('/view_item')
@@ -273,27 +280,18 @@ def drop_item():
 def add_cart():
     if request.method == 'POST':
         
-        name = request.form['name']
-        price = request.form['price']
-        category = request.form['category']
-        unique_combination = generate_random_combination()
-        detail = request.form['detail']
+        item_id = request.form['item_id']
+        user_id = session.get('user_id')
+        cart_status = '0'
 
-        upload = request.files['image']
-        storage.child("images/"+unique_combination+".jpg").put(upload)
-
-        get_pic_url = storage.child("images/"+unique_combination+".jpg").get_url(None)
 
         # Create a new Item object
-        new_item = Item(
-            name=name,
-            price=price,
-            category=category,
-            image=get_pic_url,
-            details=detail
+        new_item = Cart(
+            user_id=user_id,
+            item_id=item_id,
+            cart_status = cart_status
         )
 
-        print(get_pic_url)
         db.session.add(new_item)
         db.session.commit()
         
@@ -301,6 +299,19 @@ def add_cart():
     
     
     return render_template('cart.html')
+
+
+# Define the profile route to display the profile.html page
+@app.route('/view_cart')
+def view_cart():
+    user_id = session.get('user_id')
+    admin_true = session.get('admin_true')
+    
+
+    cart_items = db.session.query(Cart, Item).join(Item, Cart.item_id == Item.item_id).all()
+
+
+    return render_template('view_cart.html', cart_items=cart_items, admin_true = admin_true)
 
 @app.route('/logout')
 def logout():

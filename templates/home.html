@@ -14,17 +14,18 @@
 <nav>
     <ul>
      
-        <li><a href="/">Home</a></li>
         {% if admin_true %}
         <li><a href="/view_item">Item Managment</a></li>
         <li class="cart"><a href="/logout">logout</a></li>
-        {% elif admin_true != 0 %}
+        {% endif %}
+        {% if user_id %}
+        <li><a href="/profile">Home</a></li>
         <li class="cart"><a href="/cart">Cart</a></li>
         <li class=""><a href="/logout">logout</a></li>
         {% else %}
+        <li><a href="/">Home</a></li>
         <li><a href="/login">Login</a></li>
         {% endif %}
-
 
     </ul>
 </nav>
