@@ -123,6 +123,13 @@ def profile():
     items = Item.query.all()
     return render_template('profile.html', items=items, admin_true = admin_true)
 
+# Define the profile route to display the profile.html page
+@app.route('/view_item')
+def view_item():
+    items = Item.query.all()
+    admin_true = session.get('admin_true')
+    return render_template('view_item.html', items=items, admin_true = admin_true)
+
 @app.route('/logout')
 def logout():
     session.clear()
