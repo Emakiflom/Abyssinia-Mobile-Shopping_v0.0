@@ -149,6 +149,7 @@ def profile():
 def view_item():
     items = Item.query.all()
     admin_true = session.get('admin_true')
+    user_id = session.get('user_id')
     return render_template('view_item.html', items=items, admin_true = admin_true)
 
 @app.route("/view_item_detail/<int:item_id>")
@@ -306,12 +307,12 @@ def add_cart():
 def view_cart():
     user_id = session.get('user_id')
     admin_true = session.get('admin_true')
+    user_id = session.get('user_id')
     
+    cart_items = db.session.query(Cart, Item).join(Item, Cart.item_id == Item.item_id).filter(Cart.user_id == user_id).all()
 
-    cart_items = db.session.query(Cart, Item).join(Item, Cart.item_id == Item.item_id).all()
 
-
-    return render_template('view_cart.html', cart_items=cart_items, admin_true = admin_true)
+    return render_template('view_cart.html', cart_items=cart_items, admin_true = admin_true, user_id = user_id)
 
 @app.route('/logout')
 def logout():

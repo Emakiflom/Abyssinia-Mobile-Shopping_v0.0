@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+    
 </head>
 <body>
 
@@ -17,16 +19,16 @@
         {% endif %}
         {% if user_id %}
         <li><a href="/profile">Home</a></li>
-        <li class="cart"><a href="/cart">Cart</a></li>
+        <li class="cart"><a href="/view_cart">Cart</a></li>
         <li class=""><a href="/logout">logout</a></li>
         {% else %}
         <li><a href="/">Home</a></li>
         <li><a href="/login">Login</a></li>
         {% endif %}
 
-
     </ul>
 </nav>
+
 
 <h1>Welcome to Our Store</h1>
 
@@ -37,13 +39,19 @@
         <h2>{{ item.name }}</h2>
         <img src="{{ item.image }}" alt="{{ item.name }} Image">
         
-        <p>Price: ${{ item.price }}</p>
-        <form action="/add_cart" method="post">
-            <input type="text" name="item_id" hidden value="{{ item.item_id }}" id="">
-            <input type="submit" class="fa fa-plus" value="cart">
-        </form>
+        <div class="item-details">
+
+            <span class="price">${{ item.price }}</span>
+            <form action="/add_cart" method="post">
+                <input type="text" name="item_id" hidden value="{{ item.item_id }}" id="">
+                <button class="cart" type="submit">Add to Cart <span class="fa fa-shopping-cart"></span></button>
+            </form>
+        </div>
+      
     </div>
     {% endfor %}
+
+
 </div>
 
 </body>
