@@ -77,8 +77,8 @@ def home():
     return render_template('home.html', items=items, admin_true = admin_true)
 
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/register_user', methods=['GET', 'POST'])
+def register_user():
     if request.method == 'POST':
         first_name = request.form['firstName']
         last_name = request.form['lastName']
@@ -95,7 +95,7 @@ def register():
             hashed_password = generate_password_hash(password, method='sha256')
             
             # Create a new user instance and add it to the database
-            new_user = Users(FirstName=first_name, LastName=last_name, Email=email, Password=hashed_password, Address=address, PhoneNumber=phone_number)
+            new_user = Users(FirstName=first_name, LastName=last_name, Email=email, Password=password, Address=address, PhoneNumber=phone_number)
             db.session.add(new_user)
             db.session.commit()
             flash('Registration successful!', 'success')
@@ -238,6 +238,36 @@ def edit():
     
     return render_template('edit_item.html')
 
+@app.route("/delete_item/<int:item_id>")
+def delete_item(item_id):
+
+    item = Item.query.filter_by(item_id=item_id).first()
+    if item:
+        return render_template("delete_item.html", items=item)
+    else:
+        return "Item not found."
+
+
+
+@app.route('/drop_item', methods=['GET','POST'])
+def drop_item():
+    if request.method == 'POST':
+        
+        item_id = request.form['item_id']
+        # Query the item
+        item_to_delete = Item.query.get(item_id)
+
+        if item_to_delete:
+        # Mark the item for deletion
+         db.session.delete(item_to_delete)
+
+        # Commit the session to persist the changes to the database
+         db.session.commit()
+        
+        return redirect(url_for('view_item'))
+    
+    
+    return render_template('view_item.html')
 
 @app.route('/logout')
 def logout():
