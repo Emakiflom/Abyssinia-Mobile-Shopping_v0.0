@@ -1,6 +1,56 @@
-/* General styles */
+* General styles */
 body {
     font-family: Arial, sans-serif;
+}
+
+/* User profile styles */
+.user-profile {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.profile-icon img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.profile-name {
+    margin-left: 10px;
+    vertical-align: middle;
+    font-size: 1.1em;
+    color: white;
+}
+
+/* Dropdown content styles */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 150px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    top: 50px; /* Adjust this value to place the dropdown below the profile icon */
+    right: 0;
+    border-radius: 4px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Show the dropdown on hover */
+.user-profile:hover .dropdown-content {
+    display: block;
 }
 
 /* Navigation styles */
@@ -10,17 +60,17 @@ nav {
     margin-bottom: 20px;
     position: fixed;
     width: 100%;
+    left: 0;
     top: 0;
     z-index: 1000;
-    left: 0;
 }
 
 nav ul {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding-right: 10px;
     display: flex;
-    align-items: center; /* Center items vertically */
+    align-items: center;
     overflow: hidden;
 }
 
@@ -44,7 +94,7 @@ nav ul li a:hover {
     margin-left: auto; /* Push the cart item to the right */
 }
 
-.cart:hover {
+.cart a:hover {
     background-color: yellow;
     color: #333; /* Optionally change text color on hover */
 }
@@ -69,15 +119,36 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add drop shadow */
 }
 
-.item-details{
+.item img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Item details styles */
+.item-details {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.item img {
-    max-width: 100%;
-    height: auto;
+.item .cart {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.item .cart:hover {
+    background-color: yellow;
+    color: #333; /* Optionally change text color on hover */
+}
+
+.price {
+    margin-left: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 /* Form styles */
@@ -119,4 +190,10 @@ body {
 .flash-error {
     color: #ff0000;
     font-weight: bold;
+}
+
+.round_cart{
+    border: 1px solid gray;
+    border-radius: 50%;
+    font-size: 20px;
 }

@@ -121,6 +121,7 @@ def login():
 
         if_admin_ture= user.admin
         user_id = user.users_id
+        name_get = user.name
 
     
         #if user and check_password_hash(user.Password, password):
@@ -129,6 +130,7 @@ def login():
             # Redirect to the profile page upon successful login
             session['admin_true'] = if_admin_ture
             session['user_id'] = user_id
+            session['name_get'] = name_get
             return redirect(url_for('profile'))
 
         flash('Invalid username or password. Please try again.', 'error')
@@ -141,8 +143,9 @@ def login():
 def profile():
     admin_true = session.get('admin_true')
     user_id = session.get('user_id')
+    name_get = session.get('name_get')
     items = Item.query.all()
-    return render_template('profile.html', items=items, admin_true = admin_true, user_id = user_id)
+    return render_template('profile.html', items=items, admin_true = admin_true, user_id = user_id, name_get= name_get)
 
 # Define the profile route to display the profile.html page
 @app.route('/view_item')
