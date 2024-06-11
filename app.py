@@ -55,6 +55,7 @@ class Users(db.Model):
     users_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(20), nullable=False)
+    address = db.Column(db.String(20), nullable=False)
     phone = db.Column(db.String(45), unique=True, nullable=False)
     admin = db.Column(db.Boolean, default=False) 
     password = db.Column(db.String(128), nullable=False)
@@ -80,26 +81,25 @@ def home():
 @app.route('/register_user', methods=['GET', 'POST'])
 def register_user():
     if request.method == 'POST':
-        first_name = request.form['firstName']
-        last_name = request.form['lastName']
+        name = request.form['name']
         email = request.form['email']
+        phone = request.form['phone']
         password = request.form['password']
         address = request.form['address']
-        phone_number = request.form['phoneNumber']
 
         # Check if the email is already registered
-        if Users.query.filter_by(Email=email).first():
+        if Users.query.filter_by(email=email).first():
             flash('Email already registered!', 'error')
         else:
             # Hash the password before storing it in the database
-            hashed_password = generate_password_hash(password, method='sha256')
+            #hashed_password = generate_password_hash(password, method='sha256')
             
             # Create a new user instance and add it to the database
-            new_user = Users(FirstName=first_name, LastName=last_name, Email=email, Password=password, Address=address, PhoneNumber=phone_number)
+            new_user = Users(name=name, email=email, password=password, address=address, phone=phone)
             db.session.add(new_user)
             db.session.commit()
             flash('Registration successful!', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('home'))
 
     return render_template('register.html')
 
@@ -268,6 +268,39 @@ def drop_item():
     
     
     return render_template('view_item.html')
+
+@app.route('/add_cart', methods=['GET','POST'])
+def add_cart():
+    if request.method == 'POST':
+        
+        name = request.form['name']
+        price = request.form['price']
+        category = request.form['category']
+        unique_combination = generate_random_combination()
+        detail = request.form['detail']
+
+        upload = request.files['image']
+        storage.child("images/"+unique_combination+".jpg").put(upload)
+
+        get_pic_url = storage.child("images/"+unique_combination+".jpg").get_url(None)
+
+        # Create a new Item object
+        new_item = Item(
+            name=name,
+            price=price,
+            category=category,
+            image=get_pic_url,
+            details=detail
+        )
+
+        print(get_pic_url)
+        db.session.add(new_item)
+        db.session.commit()
+        
+        return redirect(url_for('home'))
+    
+    
+    return render_template('cart.html')
 
 @app.route('/logout')
 def logout():

@@ -90,10 +90,8 @@ nav ul li a:hover {
 }
 
 .item {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin: 10px;
-    width: 200px;
+    flex: 1 1 20%; /* Each item will take up 25% of the container's width */
+    box-sizing: border-box;
 }
 
 .item img {
