@@ -4,16 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
 
 <nav>
     <ul>
-        <li><a href="home.html">Home</a></li>
-        <li><a href="cart.html">Cart</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="register.html">Register</a></li>
+     
+        <li><a href="/">Home</a></li>
+        {% if admin_true %}
+        <li><a href="/register_item">Add Item</a></li>
+        <li class="cart"><a href="/logout">logout</a></li>
+        {% elif admin_true == 0 %}
+        <li class="cart"><a href="/cart">Cart</a></li>
+        <li class="cart"><a href="/logout">logout</a></li>
+        {% else %}
+        <li><a href="/login">Login</a></li>
+        {% endif %}
+
     </ul>
 </nav>
 

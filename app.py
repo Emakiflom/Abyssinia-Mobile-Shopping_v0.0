@@ -1,10 +1,13 @@
-from flask import Flask, render_template, redirect, url_for, flash, request
+from flask import Flask, render_template, redirect, url_for, flash, request ,session
 from flask_wtf import FlaskForm
 from flask_wtf.csrf import CSRFProtect
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+import pyrebase
+import random
+import string
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -17,17 +20,12 @@ db_config = {
     "database": "piyasa_dev_db",
 }
 
-# Configure the database connection
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://abyssinia_dev:abyssinia_dev_pwd@localhost/absiniya_dev_db'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost:3306/absiniya'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://flask_user:flask_password@localhost/your_database_name?unix_socket=/var/run/mysqld/mysqld.sock'
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # To suppress a warning from SQLAlchemy
-# Create the database object
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://root@localhost/absiniya?unix_socket=/opt/lampp/var/mysql/mysql.sock'
 db = SQLAlchemy(app)
 
-
+def generate_random_combination():
+    characters = string.ascii_lowercase
+    return ''.join(random.choice(characters) for _ in range(6))
 # Define a User model for the database
 # class User(db.Model):
 #     UserID = db.Column(db.Integer, primary_key=True)
@@ -43,9 +41,10 @@ class Users(db.Model):
     name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(20), nullable=False)
     phone = db.Column(db.String(45), unique=True, nullable=False)
+    admin = db.Column(db.Boolean, default=False) 
     password = db.Column(db.String(128), nullable=False)
 
-# Define an Item model for the database
+#Define an Item model for the database
 class Item(db.Model):
     item_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
@@ -56,7 +55,14 @@ class Item(db.Model):
     reg_date = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.current_timestamp())
 
 # Handle registration form submission and insert data into the database
-@app.route('/home.html', methods=['POST'])
+
+@app.route('/')
+def home():
+    admin_true = session.get('admin_true')
+    items = Item.query.all()
+    return render_template('home.html', items=items, admin_true = admin_true)
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -94,10 +100,15 @@ def login():
         #user = Users.query.filter((Users.email == username) | (Users.FirstName == username)).first()
         user = Users.query.filter((Users.email == username)).first()
 
+        if_admin_ture= user.admin
+
+        
+
         #if user and check_password_hash(user.Password, password):
         if user and user.password:
             flash('Login successful!', 'success')
             # Redirect to the profile page upon successful login
+            session['admin_true'] = if_admin_ture
             return redirect(url_for('profile'))
 
         flash('Invalid username or password. Please try again.', 'error')
@@ -108,5 +119,11 @@ def login():
 # Define the profile route to display the profile.html page
 @app.route('/profile')
 def profile():
+    admin_true = session.get('admin_true')
     items = Item.query.all()
-    return render_template('profile.html', items=items)
+    return render_template('profile.html', items=items, admin_true = admin_true)
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
