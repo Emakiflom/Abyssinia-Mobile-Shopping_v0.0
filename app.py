@@ -20,6 +20,21 @@ db_config = {
     "database": "piyasa_dev_db",
 }
 
+config = {
+  "apiKey": "AIzaSyDWaWvTMA563HJpopkVDXah0m-P-iDNcM0",
+  "authDomain": "absiniyamobile.firebaseapp.com",
+  "projectId": "absiniyamobile",
+  "storageBucket": "absiniyamobile.appspot.com",
+  "databaseURL": "https://absiniyamobile.firebaseio.com",
+  "messagingSenderId": "847444916101",
+  "appId": "1:847444916101:web:e5d56f76242de8b4c9f6ec",
+  "measurementId": "G-40BMPNTXV2"
+}
+
+firebase = pyrebase.initialize_app(config)
+storage = firebase.storage()
+
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://root@localhost/absiniya?unix_socket=/opt/lampp/var/mysql/mysql.sock'
 db = SQLAlchemy(app)
 
@@ -48,11 +63,10 @@ class Users(db.Model):
 class Item(db.Model):
     item_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
-    price = db.Column(db.Float, nullable=False)
+    price = db.Column(db.Double, nullable=False)
     category = db.Column(db.Text, nullable=False)
     image = db.Column(db.Text, nullable=False)
     details = db.Column(db.Text, nullable=False)
-    reg_date = db.Column(db.TIMESTAMP, nullable=False, server_default=db.func.current_timestamp())
 
 # Handle registration form submission and insert data into the database
 
@@ -129,6 +143,101 @@ def view_item():
     items = Item.query.all()
     admin_true = session.get('admin_true')
     return render_template('view_item.html', items=items, admin_true = admin_true)
+
+@app.route("/view_item_detail/<int:item_id>")
+def view_item_detail(item_id):
+    item = Item.query.filter_by(item_id=item_id).first()
+    if item:
+        return render_template("view_item_detail.html", items=item)
+    else:
+        return "Item not found."
+
+
+@app.route('/add_item', methods=['GET','POST'])
+def add_item():
+    if request.method == 'POST':
+        
+        name = request.form['name']
+        price = request.form['price']
+        category = request.form['category']
+        unique_combination = generate_random_combination()
+        detail = request.form['detail']
+
+        upload = request.files['image']
+        storage.child("images/"+unique_combination+".jpg").put(upload)
+
+        get_pic_url = storage.child("images/"+unique_combination+".jpg").get_url(None)
+
+        # Create a new Item object
+        new_item = Item(
+            name=name,
+            price=price,
+            category=category,
+            image=get_pic_url,
+            details=detail
+        )
+
+        print(get_pic_url)
+        db.session.add(new_item)
+        db.session.commit()
+        
+        return redirect(url_for('home'))
+    
+    
+    return render_template('register_item.html')
+
+@app.route("/edit_item/<int:item_id>")
+def edit_item(item_id):
+    
+    item = Item.query.filter_by(item_id=item_id).first()
+    if item:
+        return render_template("edit_item.html", item=item)
+    else:
+        return "Item not found."
+    
+@app.route('/edit', methods=['GET','POST'])
+def edit():
+    if request.method == 'POST':
+        
+        item_id = request.form['item_id']
+        name = request.form['name']
+        price = request.form['price']
+        category = request.form['category']
+        unique_combination = generate_random_combination()
+        detail = request.form['detail']
+        image_url = request.form['image_url']
+        
+      
+      
+        file = request.files['image']
+
+        if file:
+            upload = request.files['image']
+            storage.child("images/"+unique_combination+".jpg").put(upload)
+            image_url = storage.child("images/"+unique_combination+".jpg").get_url(None)
+
+        # Query the item
+        item_to_update = Item.query.get(item_id)
+
+
+        if item_to_update:
+         # Update the attributes
+         item_to_update.name = name
+         item_to_update.price = price
+         item_to_update.category = category
+         item_to_update.image = image_url
+         item_to_update.details = detail
+
+         # Commit the changes to the database
+         db.session.commit()
+        else:
+            print("Item not found")
+
+        return redirect(url_for('view_item'))
+    
+    
+    return render_template('edit_item.html')
+
 
 @app.route('/logout')
 def logout():

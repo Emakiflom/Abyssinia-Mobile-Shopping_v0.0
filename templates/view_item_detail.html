@@ -30,9 +30,6 @@
 
 <style>
     .class_img{
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
         border: 1px inset #afb8b4;
     }
 </style>
@@ -43,33 +40,39 @@
 
 <div class="card">
     <div class="card-header">
-        <a href="/add_item"><button class="btn btn-info"><span class="fa fa-plus"></span></button></a>  Item Managment
+     <a href="/view_item"><button class="btn btn-info"><span class="fa fa-backward"></span></button></a> View  Item Details
     </div>
     <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Category</th>
-                <th>Image</th>
-                <th>Action</th>
-            </tr>
-        </thead>
     <tbody>
 
-    {% for row in items %}
     <tr>
-        <td>{{ row.name }}</td>  
-        <td>{{ row.price }}$</td>
-        <td>{{ row.category }}</td>
-        <td><img class="class_img" src="{{ row.image }}"/></td>
-        <td>
-            <a href="/view_item_detail/{{ row.item_id }}"><button type="button" class="btn btn-primary"><i class="fa fa-eye"></i></button></a>
-            <a href="/edit_item/{{ row.item_id }}"><button type="button" class="btn btn-success"><i class="fa fa-edit"></i></button></a>
-            <a href="/delete_item/{{ row.item_id }}"><button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button></a>
-        </td>
+        <th>Item Mame</th>
+        <td>{{ items.name }}</td>  
         </tr>
-    {% endfor %}
+        <tr>
+            <th>Item Price</th>
+            <td>{{ items.price }}</td>
+        </tr>
+
+        <tr>
+            <th>Item category</th>
+
+            <td>{{ items.category }}</td>
+        </tr>
+
+        <tr>
+            <th>Item Detail</th>
+
+            <td>{{ items.details }}</td>
+        </tr>
+
+        <tr>
+            <th>Item Image</th>
+
+        <td><img class="class_img" src="{{ items.image }}"/></td>
+        </tr>
+        </tr>
+        
 
     </tbody>
     </table>
