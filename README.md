@@ -51,8 +51,8 @@ The item management page is available to admin users for managing items. Admins 
 
 ## Technologies Used
 
-- **Frontend**: HTML, CSS, JavaScript, Bootstrap
-- **Backend**: Flask, SQLAlchemy
+- **Frontend**: HTML, CSS, JavaScript
+- **Backend**: Flask, SQLAlchemy, Python
 - **Database**: MySQL
 
 ## Setup Instructions
