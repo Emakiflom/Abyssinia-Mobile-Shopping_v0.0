@@ -23,8 +23,7 @@ The home page allows users to browse available items. Each item displays its nam
 
 The login page allows users to log in using their username and password. It includes form validation and error messages for incorrect credentials.
 
-![Login Page](static/images
-/before login.webp)
+![Login Page](https://raw.githubusercontent.com/Emakiflom/Abyssinia-Mobile-Shopping_v0.0/master/static/images/login%20process.webp)
 
 ## Register Page
 
