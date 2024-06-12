@@ -1,4 +1,4 @@
-* General styles */
+/* General styles */
 body {
     font-family: Arial, sans-serif;
 }
@@ -60,7 +60,6 @@ nav {
     margin-bottom: 20px;
     position: fixed;
     width: 100%;
-    left: 0;
     top: 0;
     z-index: 1000;
 }
@@ -68,7 +67,7 @@ nav {
 nav ul {
     list-style-type: none;
     margin: 0;
-    padding-right: 10px;
+    padding: 0;
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -190,10 +189,4 @@ body {
 .flash-error {
     color: #ff0000;
     font-weight: bold;
-}
-
-.round_cart{
-    border: 1px solid gray;
-    border-radius: 50%;
-    font-size: 20px;
 }

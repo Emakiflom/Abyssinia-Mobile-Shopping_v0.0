@@ -79,8 +79,12 @@ def home():
     admin_true = session.get('admin_true')
     user_id = session.get('user_id')
     items = Item.query.all()
-    
-    return render_template('home.html', items=items, admin_true = admin_true, user_id = user_id)
+
+    if admin_true:
+        return render_template('home.html', items=items, admin_true = admin_true)
+    else:
+        return render_template('home.html', items=items, admin_true = admin_true, user_id = user_id)
+
 
 
 @app.route('/register_user', methods=['GET', 'POST'])
@@ -131,7 +135,10 @@ def login():
             session['admin_true'] = if_admin_ture
             session['user_id'] = user_id
             session['name_get'] = name_get
-            return redirect(url_for('profile'))
+            if if_admin_ture:
+                return redirect(url_for('view_item'))
+            else:
+                return redirect(url_for('profile'))
 
         flash('Invalid username or password. Please try again.', 'error')
 
@@ -299,7 +306,7 @@ def add_cart():
         db.session.add(new_item)
         db.session.commit()
         
-        return redirect(url_for('home'))
+        return redirect(url_for('view_cart'))
     
     
     return render_template('cart.html')
@@ -311,11 +318,33 @@ def view_cart():
     user_id = session.get('user_id')
     admin_true = session.get('admin_true')
     user_id = session.get('user_id')
+    name_get = session.get('name_get')
     
     cart_items = db.session.query(Cart, Item).join(Item, Cart.item_id == Item.item_id).filter(Cart.user_id == user_id).all()
 
 
-    return render_template('view_cart.html', cart_items=cart_items, admin_true = admin_true, user_id = user_id)
+    return render_template('view_cart.html', cart_items=cart_items, admin_true = admin_true, user_id = user_id, name_get= name_get)
+
+
+@app.route('/remove_cart', methods=['GET','POST'])
+def remove_cart():
+    if request.method == 'POST':
+        
+        cart_id = request.form['cart_id']
+        # Query the item
+        cart_to_delete = Cart.query.get(cart_id)
+
+        if cart_to_delete:
+        # Mark the item for deletion
+         db.session.delete(cart_to_delete)
+
+        # Commit the session to persist the changes to the database
+         db.session.commit()
+        
+        return redirect(url_for('view_cart'))
+    
+    
+    return render_template('view_cart.html')
 
 @app.route('/logout')
 def logout():
