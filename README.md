@@ -23,7 +23,8 @@ The home page allows users to browse available items. Each item displays its nam
 
 The login page allows users to log in using their username and password. It includes form validation and error messages for incorrect credentials.
 
-![Login Page](path/to/loginpage_image.png)
+![Login Page](static/images
+/before login.webp)
 
 ## Register Page
 
