@@ -13,16 +13,26 @@
 <nav>
     <ul>
         {% if admin_true %}
-        <li><a href="/view_item">Item Management</a></li>
-        <li class="cart"><a href="/logout">Logout</a></li>
+        <li><a href="/view_item">Item cart Management</a></li>
+        <li class=""><a href="/logout"><span class="fa fa-sign-out fa-2x"></span></a></li>
         {% endif %}
         {% if user_id %}
         <li><a href="/profile">Home</a></li>
-        <li class="cart"><a href="/view_cart">Cart</a></li>
-        <li><a href="/logout">Logout</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/register_user">Register</a></li>
+        <li class="cart"><a href="/view_cart"><span class="fa fa-shopping-cart fa-2x"></span></a></li>
+        <div class="user-profile">
+            <span class="profile-icon">
+                <img src="{{ url_for('static', filename='images/profile_10.png') }}" alt="Profile Image">
+            </span>
+            <span class="profile-name">{{ name_get }}</span>
+        </div>
+        <li class=""><a href="/logout"><span class="fa fa-sign-out fa-2x"></span></a></li>
         {% else %}
         <li><a href="/">Home</a></li>
         <li><a href="/login">Login</a></li>
+        <li><a href="/register_user">Register</a></li>
         {% endif %}
     </ul>
 </nav>

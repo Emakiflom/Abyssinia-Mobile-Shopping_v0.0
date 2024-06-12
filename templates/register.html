@@ -8,22 +8,25 @@
 </head>
 <body>
 
-<nav>
-    <ul>
-        {% if admin_true %}
-        <li><a href="/view_item">Item Managment</a></li>
-        <li class="cart"><a href="/logout">logout</a></li>
-        {% endif %}
-        {% if user_id %}
-        <li><a href="/profile">Home</a></li>
-        <li class="cart"><a href="/view_cart">Cart</a></li>
-        <li class=""><a href="/logout">logout</a></li>
-        {% else %}
-        <li><a href="/">Home</a></li>
-        <li><a href="/login">Login</a></li>
-        {% endif %}
-    </ul>
-</nav>
+    <nav>
+        <ul>
+            {% if admin_true %}
+            <li><a href="/view_item">Item cart Management</a></li>
+            <li class="cart"><a href="/logout">Logout</a></li>
+            {% endif %}
+            {% if user_id %}
+            <li><a href="/profile">Home</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/register_user">Register</a></li>
+            {% else %}
+            <li><a href="/">Home</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/register_user">Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
 
 
 

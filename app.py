@@ -60,6 +60,12 @@ class Users(db.Model):
     admin = db.Column(db.Boolean, default=False) 
     password = db.Column(db.String(128), nullable=False)
 
+class Contact(db.Model):
+    contact_id = db.Column(db.Integer, primary_key=True)
+    contact_name = db.Column(db.String(20), nullable=False)
+    contact_email = db.Column(db.String(20), nullable=False)
+    contact_message = db.Column(db.String(230), nullable=False)
+
 #Define an Item model for the database
 class Item(db.Model):
     item_id = db.Column(db.Integer, primary_key=True)
@@ -345,6 +351,47 @@ def remove_cart():
     
     
     return render_template('view_cart.html')
+
+# Define the Contact route to display the contact.html page
+@app.route('/contact')
+def contact():
+    items = Item.query.all()
+    admin_true = session.get('admin_true')
+    user_id = session.get('user_id')
+    return render_template('contact.html', items=items, admin_true = admin_true, user_id = user_id)
+
+@app.route('/add_contact', methods=['GET','POST'])
+def add_contact():
+    flash('This is a toast message!')
+    if request.method == 'POST':
+        
+        name = request.form['name']
+        email = request.form['email']
+        message = request.form['message']
+        flash('Your message has been sent successfully!', 'success')
+
+        # Create a new Contact object
+        new_item = Contact(
+            contact_name=name,
+            contact_email=email,
+            contact_message=message
+        )
+
+        db.session.add(new_item)
+        db.session.commit()
+        
+        return redirect(url_for('contact'))
+
+    return render_template('contact.html')
+
+
+# Define the about route to display the about.html page
+@app.route('/about')
+def about():
+    items = Item.query.all()
+    admin_true = session.get('admin_true')
+    user_id = session.get('user_id')
+    return render_template('about.html', items=items, admin_true = admin_true, user_id = user_id)
 
 @app.route('/logout')
 def logout():

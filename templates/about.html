@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+
     <nav>
         <ul>
             {% if admin_true %}
@@ -36,28 +37,23 @@
         </ul>
     </nav>
 
-<h1>Welcome to Our Store</h1>
 
-<div class="items">
-    <!-- Items retrieved from the database -->
-    {% for item in items %}
-    <div class="item">
-        <h2>{{ item.name }}</h2>
-        <img src="{{ item.image }}" alt="{{ item.name }} Image">
-        
-        <div class="item-details">
+<div class="container">
+    <h1>About Us</h1>
+    <p>Welcome to our online shop! We are dedicated to providing you with the best products and customer service.</p>
+    
+    <h2>Our Mission</h2>
+    <p>Our mission is to offer high-quality products at affordable prices, ensuring customer satisfaction through exceptional service.</p>
 
-            <span class="price">${{ item.price }}</span>
-            <form action="/add_cart" method="post">
-                <input type="text" name="item_id" hidden value="{{ item.item_id }}" id="">
-                <button class="cart" type="submit">Add to Cart <span class="fa fa-shopping-cart"></span></button>
-            </form>
-        </div>
-      
-    </div>
-    {% endfor %}
+    <h2>Our Team</h2>
+    <p>We are a team of passionate individuals committed to bringing you the best shopping experience. Our team works tirelessly to source the finest products and ensure prompt delivery.</p>
 
+    <h2>Our History</h2>
+    <p>Founded in 2024, our online shop has grown rapidly thanks to our loyal customers. We started with a small selection of items and have expanded our range to include a wide variety of products.</p>
 
+    <h2>Contact Information</h2>
+    <p>If you have any questions, feel free to <a href="/contact">contact us</a>. We are always here to help!</p>
 </div>
+
 </body>
 </html>
