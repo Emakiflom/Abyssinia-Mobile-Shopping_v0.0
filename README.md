@@ -17,7 +17,7 @@ The aim of this website is to provide a seamless and user-friendly e-commerce pl
 
 The home page allows users to browse available items. Each item displays its name, price, category, and an image. Users can add items to their cart from here.
 
-![Home Page](path/to/homepage_image.png)
+![Home Page](static/images/before login.webp)
 
 ## Login Page
 
