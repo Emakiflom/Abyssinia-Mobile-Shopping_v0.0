@@ -60,3 +60,18 @@ The item management page is available to admin users for managing items. Admins 
 1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/your-repo.git
+    ```
+2. Navigate to the project directory:
+   ```bash
+   cd your-repo
+   ```
+3. Install the dependencies
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Configure your database settings in the config.py file.
+5. Run the application:
+   ```bash
+   python app.py
+   ```
+
