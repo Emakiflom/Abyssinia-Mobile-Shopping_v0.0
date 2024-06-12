@@ -41,13 +41,13 @@ The profile page displays the logged-in user's information, including their prof
 
 The cart page displays the items added to the cart by the user. Each item shows its name, price, category, image, and quantity. The total price is calculated based on the quantity of each item, and a grand total is displayed.
 
-![Cart Page](path/to/cartpage_image.png)
+![Cart Page](https://raw.githubusercontent.com/Emakiflom/Abyssinia-Mobile-Shopping_v0.0/master/static/images/cart%20all%20in%20one.webp)
 
 ## Item Management Page
 
 The item management page is available to admin users for managing items. Admins can view a list of items with options to edit or delete them. It includes item details such as name, price, category, image, and quantity.
 
-![Item Management Page](path/to/itemmanagement_image.png)
+![Item Management Page](https://raw.githubusercontent.com/Emakiflom/Abyssinia-Mobile-Shopping_v0.0/master/static/images/admin%20item.webp)
 
 ## Technologies Used
 
