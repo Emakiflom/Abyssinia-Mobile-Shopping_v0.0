@@ -29,7 +29,7 @@ The login page allows users to log in using their username and password. It incl
 
 The register page allows new users to create an account by providing a username and password. It includes form validation to ensure all fields are correctly filled.
 
-![Register Page](path/to/registerpage_image.png)
+![Register Page](https://raw.githubusercontent.com/Emakiflom/Abyssinia-Mobile-Shopping_v0.0/master/static/images/register%20user.webp)
 
 ## Profile Page
 
