@@ -31,6 +31,19 @@ The register page allows new users to create an account by providing a username 
 
 ![Register Page](https://raw.githubusercontent.com/Emakiflom/Abyssinia-Mobile-Shopping_v0.0/master/static/images/register%20user.webp)
 
+## About Us Page
+
+The About Us page provides information about the shop, its mission, the team behind it, and its history. It also includes contact information for customer inquiries.
+
+![About Us Page](path/to/aboutpage_image.png)
+
+## Contact Us Page
+
+The Contact Us page allows users to send a message to the shop. Users need to fill out their name, email address, and message. Upon submission, a success message is displayed.
+
+![Contact Us Page](path/to/contactuspage_image.png)
+
+
 ## Profile Page
 
 The profile page displays the logged-in user's information, including their profile image and username. It also provides options to edit the profile and log out.
