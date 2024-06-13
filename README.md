@@ -35,7 +35,7 @@ The register page allows new users to create an account by providing a username 
 
 The About Us page provides information about the shop, its mission, the team behind it, and its history. It also includes contact information for customer inquiries.
 
-![About Us Page](path/to/aboutpage_image.png)
+![About Us Page](https://raw.githubusercontent.com/Emakiflom/Abyssinia-Mobile-Shopping_v0.0/master/static/images/3%20about.webp)
 
 ## Contact Us Page
 
