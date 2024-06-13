@@ -41,7 +41,7 @@ The About Us page provides information about the shop, its mission, the team beh
 
 The Contact Us page allows users to send a message to the shop. Users need to fill out their name, email address, and message. Upon submission, a success message is displayed.
 
-![Contact Us Page](path/to/contactuspage_image.png)
+![Contact Us Page](https://github.com/Emakiflom/Abyssinia-Mobile-Shopping_v0.0/blob/master/static/images/2%20contact.webp)
 
 
 ## Profile Page
