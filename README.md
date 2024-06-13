@@ -48,7 +48,7 @@ The Contact Us page allows users to send a message to the shop. Users need to fi
 
 The profile page displays the logged-in user's information, including their profile image and username. It also provides options to edit the profile and log out.
 
-![Profile Page](path/to/profilepage_image.png)
+![Profile Page](https://raw.githubusercontent.com/Emakiflom/Abyssinia-Mobile-Shopping_v0.0/master/static/images/1%20profile.webp)
 
 ## Cart Page
 
