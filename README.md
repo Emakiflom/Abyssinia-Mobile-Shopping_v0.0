@@ -54,7 +54,7 @@ The profile page displays the logged-in user's information, including their prof
 
 The cart page displays the items added to the cart by the user. Each item shows its name, price, category, image, and quantity. The total price is calculated based on the quantity of each item, and a grand total is displayed.
 
-![Cart Page](https://raw.githubusercontent.com/Emakiflom/Abyssinia-Mobile-Shopping_v0.0/master/static/images/cart%20all%20in%20one.webp)
+![Cart Page](https://raw.githubusercontent.com/Emakiflom/Abyssinia-Mobile-Shopping_v0.0/master/static/images/4%20cart.webp)
 
 ## Item Management Page
 
